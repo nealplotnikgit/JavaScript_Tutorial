@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript</title>
+</head>
+<body>
+    <h1 id="title">To Do Tracker</h1>
+    <form>
+        <input type="text" id="user-todo" placeholder="New ToDo" required>
+    </form>
+
+    <h2 id="todoheader">ToDos</h2>
+    <ul></ul>
+    <button id="clear">Clear All</button>
+    <a id='navigation' href='index.html'>Home</a>
+
+    <script>
+
+        var form = document.querySelector("form");
+        var input = document.getElementById("user-todo");
+        var buttonClear = document.getElementById("clear");
+        var todoslist = document.querySelector("ul");
+//        var todosArray = [];//store all values in single local storage key
+        var todosArray = localStorage.getItem('todo') ? JSON.parse(localStorage.getItem('todo')) : [];
+
+        localStorage.setItem('todo',JSON.stringify(todosArray));
+
+        var storage = JSON.parse(localStorage.getItem("todo"));
+
+        for (i=0;i<storage.length;i++){
+            toDoMaker(storage[i]);
+        }
+
+        form.addEventListener('submit',function(e){
+            e.preventDefault();
+            toDoMaker(input.value);
+            localStorage.setItem('todo',JSON.stringify(todosArray));
+            input.value="";
+        });
+
+        function toDoMaker(val){
+            todosArray.push(input.value);
+            listitem = document.createElement("li");
+            listitem.textContent = val;
+            todoslist.appendChild(listitem);
+        }
+
+        buttonClear.addEventListener('click',function(e){
+            while (todoslist.hasChildNodes()){
+                todoslist.removeChild(todoslist.firstChild);
+            }
+            todosArray = [];
+            localStorage.setItem('todo',JSON.stringify(todosArray))
+        });
+
+
+    </script>
+
+</body>
+</html>
